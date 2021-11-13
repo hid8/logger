@@ -19,6 +19,8 @@ package logger
 
 import (
 	"fmt"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -31,9 +33,14 @@ type Channel struct {
 }
 
 func NewChannel(name string) *Channel {
+	debugging := false
+	if debug := os.Getenv("DEBUG"); debug != "" {
+		debug = strings.ToLower(debug)
+		debugging = debug == "all" || debug == strings.ToLower(name)
+	}
 	return &Channel{
 		name:      name,
-		debugging: false,
+		debugging: debugging,
 	}
 }
 
